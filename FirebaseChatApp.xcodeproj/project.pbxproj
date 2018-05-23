@@ -12,6 +12,7 @@
 		DEDECED320B5A08D00B15105 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DEDECED120B5A08D00B15105 /* Main.storyboard */; };
 		DEDECED520B5A08E00B15105 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEDECED420B5A08E00B15105 /* Assets.xcassets */; };
 		DEDECED820B5A08E00B15105 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DEDECED620B5A08E00B15105 /* LaunchScreen.storyboard */; };
+		DEDECEE120B5A21C00B15105 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDECEE020B5A21C00B15105 /* LoginController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		DEDECED420B5A08E00B15105 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DEDECED720B5A08E00B15105 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DEDECED920B5A08E00B15105 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DEDECEE020B5A21C00B15105 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +56,31 @@
 		DEDECECC20B5A08D00B15105 /* FirebaseChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				DEDECEE220B5AF5D00B15105 /* View */,
+				DEDECEDF20B5A20200B15105 /* Controller */,
 				DEDECECD20B5A08D00B15105 /* AppDelegate.swift */,
-				DEDECECF20B5A08D00B15105 /* ViewController.swift */,
 				DEDECED120B5A08D00B15105 /* Main.storyboard */,
 				DEDECED420B5A08E00B15105 /* Assets.xcassets */,
 				DEDECED620B5A08E00B15105 /* LaunchScreen.storyboard */,
 				DEDECED920B5A08E00B15105 /* Info.plist */,
 			);
 			path = FirebaseChatApp;
+			sourceTree = "<group>";
+		};
+		DEDECEDF20B5A20200B15105 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DEDECECF20B5A08D00B15105 /* ViewController.swift */,
+				DEDECEE020B5A21C00B15105 /* LoginController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DEDECEE220B5AF5D00B15105 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,6 +155,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEDECED020B5A08D00B15105 /* ViewController.swift in Sources */,
+				DEDECEE120B5A21C00B15105 /* LoginController.swift in Sources */,
 				DEDECECE20B5A08D00B15105 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
