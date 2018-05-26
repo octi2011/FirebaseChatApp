@@ -22,9 +22,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     var messages = [Message]()
     
     func observeMessages() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
+        guard let uid = Auth.auth().currentUser?.uid, let toId = user?.id else { return }
         
-        let userMessagesRef = Database.database().reference().child("user-messages").child(uid)
+        let userMessagesRef = Database.database().reference().child("user-messages").child(uid).child(toId)
         userMessagesRef.observe(.childAdded, with: { (snapshot) in
             
             let messageId = snapshot.key
@@ -41,12 +41,10 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                 message.toId = dictionary["toId"] as? String
                 message.timeStamp = dictionary["timeStamp"] as? NSNumber
                 
-                if message.charPartnerId() == self.user?.id {
-                    self.messages.append(message)
-                    
-                    DispatchQueue.main.async {
-                        self.collectionView?.reloadData()
-                    }
+                self.messages.append(message)
+                
+                DispatchQueue.main.async {
+                    self.collectionView?.reloadData()
                 }
                
             }, withCancel: nil)
@@ -216,8 +214,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             height = estimatedFramefForText(text: text).height + 20
         }
         
-        let width = UIScreen.main.bounds.width
-        return CGSize(width: width, height: height)
+        return CGSize(width: view.frame.width, height: height)
     }
     
     private func estimatedFramefForText(text: String) -> CGRect {
@@ -291,12 +288,12 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             
             self.inputTextField.text = nil
             
-            let userMessagesRef = Database.database().reference().child("user-messages").child(fromId)
+            let userMessagesRef = Database.database().reference().child("user-messages").child(fromId).child(toId)
             
             let messageId = childRef.key
             userMessagesRef.updateChildValues([messageId: 1])
             
-            let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toId)
+            let recipientUserMessagesRef = Database.database().reference().child("user-messages").child(toId).child(fromId)
             
             recipientUserMessagesRef.updateChildValues([messageId: 1])
         }
