@@ -11,18 +11,25 @@ import Firebase
 
 class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     
+    var user: User? {
+        didSet {
+            navigationItem.title = user?.name
+        }
+    }
+    
     lazy var inputTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Enter message..."
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
+        textField.autocapitalizationType = .sentences
+        textField.autocorrectionType = .no
+        textField.spellCheckingType = .no
         return textField
     }()
    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationItem.title = "Chat Log Controller"
         
         collectionView?.backgroundColor = .white
         
@@ -72,12 +79,15 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate {
     @objc func handleSend() {
         let ref = Database.database().reference().child("messages")
         let childRef = ref.childByAutoId() // this is for lists
-        let values = ["text": inputTextField.text!, "name": "Bran Stark"]
+        let toId = user!.id!
+        let fromId = Auth.auth().currentUser!.uid
+        let timeStamp = Int(NSDate().timeIntervalSince1970)
+        let values = ["text": inputTextField.text!, "toId": toId, "fromId": fromId, "timeStamp": timeStamp] as [String : Any]
         childRef.updateChildValues(values)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        handleSend()
+        handleSend() // on enter send message
         return true
     }
 }

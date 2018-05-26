@@ -13,6 +13,7 @@
 		DE60CC8920B842F700037CA5 /* LoginController+handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE60CC8820B842F700037CA5 /* LoginController+handlers.swift */; };
 		DE60CC8C20B8634D00037CA5 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE60CC8B20B8634D00037CA5 /* Extensions.swift */; };
 		DE60CC8E20B95E0700037CA5 /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE60CC8D20B95E0700037CA5 /* ChatLogController.swift */; };
+		DE60CC9020B973D600037CA5 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE60CC8F20B973D600037CA5 /* Message.swift */; };
 		DEDECECE20B5A08D00B15105 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDECECD20B5A08D00B15105 /* AppDelegate.swift */; };
 		DEDECED020B5A08D00B15105 /* MessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDECECF20B5A08D00B15105 /* MessagesController.swift */; };
 		DEDECED320B5A08D00B15105 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DEDECED120B5A08D00B15105 /* Main.storyboard */; };
@@ -31,6 +32,7 @@
 		DE60CC8820B842F700037CA5 /* LoginController+handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginController+handlers.swift"; sourceTree = "<group>"; };
 		DE60CC8B20B8634D00037CA5 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		DE60CC8D20B95E0700037CA5 /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
+		DE60CC8F20B973D600037CA5 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		DEDECECA20B5A08D00B15105 /* FirebaseChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirebaseChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEDECECD20B5A08D00B15105 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DEDECECF20B5A08D00B15105 /* MessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesController.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				DE60CC8620B8274200037CA5 /* User.swift */,
+				DE60CC8F20B973D600037CA5 /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 				DE60CC8E20B95E0700037CA5 /* ChatLogController.swift in Sources */,
 				DE60CC8420B81F3700037CA5 /* NewMessageController.swift in Sources */,
 				DEDECED020B5A08D00B15105 /* MessagesController.swift in Sources */,
+				DE60CC9020B973D600037CA5 /* Message.swift in Sources */,
 				DE60CC8920B842F700037CA5 /* LoginController+handlers.swift in Sources */,
 				DEDECEE120B5A21C00B15105 /* LoginController.swift in Sources */,
 				DE60CC8720B8274200037CA5 /* User.swift in Sources */,
