@@ -28,16 +28,8 @@ class UserCell: UITableViewCell {
     }
     
     private func setupNameAndProfileImage() {
-        let charPartnerId: String?
         
-        if message?.fromId == Auth.auth().currentUser?.uid {
-            charPartnerId = message?.toId
-        } else {
-            charPartnerId = message?.fromId
-        }
-        
-        
-        if let id = charPartnerId {
+        if let id = message?.charPartnerId() {
             let ref = Database.database().reference().child("users").child(id)
             ref.observeSingleEvent(of: .value, with: { (snapshot) in
                 
