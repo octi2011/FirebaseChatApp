@@ -13,20 +13,7 @@ class UserCell: UITableViewCell {
     
     var message: Message? {
         didSet {
-            if let toId = message?.toId {
-                let ref = Database.database().reference().child("users").child(toId)
-                ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                    
-                    if let dictionary = snapshot.value as? [String: AnyObject] {
-                        
-                        self.textLabel?.text = dictionary["name"] as? String
-                        
-                        if let profileImageUrl = dictionary["profileImageUrl"] as? String {
-                            self.profileImageView.loadImageUsingCache(withUrlString: profileImageUrl)
-                        }
-                    }
-                }, withCancel: nil)
-            }
+            setupNameAndProfileImage()
             
             detailTextLabel?.text = message?.text
             
@@ -34,9 +21,35 @@ class UserCell: UITableViewCell {
                 let timeStampdate = NSDate(timeIntervalSince1970: seconds)
                 
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "hh:mm:ss a"
+                dateFormatter.dateFormat = "hh:mm a"
                 timeLabel.text = dateFormatter.string(from: timeStampdate as Date)
             }
+        }
+    }
+    
+    private func setupNameAndProfileImage() {
+        let charPartnerId: String?
+        
+        if message?.fromId == Auth.auth().currentUser?.uid {
+            charPartnerId = message?.toId
+        } else {
+            charPartnerId = message?.fromId
+        }
+        
+        
+        if let id = charPartnerId {
+            let ref = Database.database().reference().child("users").child(id)
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    
+                    self.textLabel?.text = dictionary["name"] as? String
+                    
+                    if let profileImageUrl = dictionary["profileImageUrl"] as? String {
+                        self.profileImageView.loadImageUsingCache(withUrlString: profileImageUrl)
+                    }
+                }
+            }, withCancel: nil)
         }
     }
     
@@ -58,7 +71,6 @@ class UserCell: UITableViewCell {
     
     let timeLabel: UILabel = {
         let label = UILabel()
-        label.text = "HH:MM:SS"
         label.font = UIFont.systemFont(ofSize: 13)
         label.textColor = .lightGray
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -80,7 +92,7 @@ class UserCell: UITableViewCell {
         
         timeLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         timeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 18).isActive = true
-        timeLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        timeLabel.widthAnchor.constraint(equalToConstant: 80).isActive = true
         timeLabel.heightAnchor.constraint(equalTo: textLabel!.heightAnchor).isActive = true
     }
     

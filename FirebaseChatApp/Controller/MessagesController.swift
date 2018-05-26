@@ -26,39 +26,49 @@ class MessagesController: UITableViewController {
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
         
-        observeMessages()
+        
        
     }
     
     var messages = [Message]()
-    var mesagesDictionary = [String: Message]()
+    var messagesDictionary = [String: Message]()
     
-    func observeMessages() {
-        let ref = Database.database().reference().child("messages")
+    func observeUserMessages() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        let ref = Database.database().reference().child("user-messages").child(uid)
         ref.observe(.childAdded, with: { (snapshot) in
             
-            if let dictionary = snapshot.value as? [String: AnyObject] {
-                let message = Message()
-                message.text = dictionary["text"] as? String
-                message.fromId = dictionary["fromId"] as? String
-                message.toId = dictionary["toId"] as? String
-                message.timeStamp = dictionary["timeStamp"] as? NSNumber
+            let messageId = snapshot.key
+            let messagesReference = Database.database().reference().child("messages").child(messageId)
+            
+            messagesReference.observeSingleEvent(of: .value, with: { (snapshot) in
                 
-                self.messages.append(message)
-                
-                if let toId = message.toId {
-                    self.mesagesDictionary[toId] = message
+                if let dictionary = snapshot.value as? [String: AnyObject] {
+                    let message = Message()
+                    message.text = dictionary["text"] as? String
+                    message.fromId = dictionary["fromId"] as? String
+                    message.toId = dictionary["toId"] as? String
+                    message.timeStamp = dictionary["timeStamp"] as? NSNumber
                     
-                    self.messages = Array(self.mesagesDictionary.values)
-                    self.messages.sort(by: { (message1, message2) -> Bool in
-                        return (message1.timeStamp?.intValue)! > (message2.timeStamp?.intValue)!
-                    })
+                    self.messages.append(message)
+                    
+                    if let toId = message.toId {
+                        self.messagesDictionary[toId] = message
+                        
+                        self.messages = Array(self.messagesDictionary.values)
+                        self.messages.sort(by: { (message1, message2) -> Bool in
+                            return (message1.timeStamp?.intValue)! > (message2.timeStamp?.intValue)!
+                        })
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
                 }
                 
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            }
+            }, withCancel: nil)
+            
         }, withCancel: nil)
     }
     
@@ -113,6 +123,12 @@ class MessagesController: UITableViewController {
     }
     
     func setupNavBar(withUser user: User) {
+        messages.removeAll()
+        messagesDictionary.removeAll()
+        tableView.reloadData()
+        
+        observeUserMessages()
+        
         let titleView = UIView()
         titleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
         
