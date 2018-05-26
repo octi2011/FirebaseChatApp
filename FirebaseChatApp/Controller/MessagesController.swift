@@ -53,7 +53,7 @@ class MessagesController: UITableViewController {
                     
                     self.messages.append(message)
                     
-                    if let chatPartnerId = message.toId {
+                    if let chatPartnerId = message.charPartnerId() {
                         self.messagesDictionary[chatPartnerId] = message
                         
                         self.messages = Array(self.messagesDictionary.values)
@@ -75,7 +75,6 @@ class MessagesController: UITableViewController {
     
     @objc func handleReloadTable() {
         DispatchQueue.main.async {
-            print("Table reloaded")
             self.tableView.reloadData()
         }
     }
@@ -106,7 +105,6 @@ class MessagesController: UITableViewController {
         
         let ref = Database.database().reference().child("users").child(chatPartnerId)
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            print(snapshot)
             guard let dictionary = snapshot.value as? [String: AnyObject] else {
                 return
             }
