@@ -62,14 +62,22 @@ class MessagesController: UITableViewController {
                         })
                     }
                     
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
+                    self.timer?.invalidate()
+                    self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
                 }
                 
             }, withCancel: nil)
             
         }, withCancel: nil)
+    }
+    
+    var timer: Timer?
+    
+    @objc func handleReloadTable() {
+        DispatchQueue.main.async {
+            print("Table reloaded")
+            self.tableView.reloadData()
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -111,10 +119,6 @@ class MessagesController: UITableViewController {
             
             
         }, withCancel: nil)
-        
-        
-        
-        //showChatController(forUser: <#T##User#>)
     }
     
     @objc func handleNewMessage() {
