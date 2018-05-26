@@ -44,7 +44,6 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     
     @objc func handleRegister() {
         guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
-            print("Form is not valid!")
             return
         }
         

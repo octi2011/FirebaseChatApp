@@ -77,7 +77,6 @@ class NewMessageController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         dismiss(animated: true, completion: {
-            print("Dismiss completed")
             let user = self.users[indexPath.row]
             self.messagesController?.showChatController(forUser: user)
         })

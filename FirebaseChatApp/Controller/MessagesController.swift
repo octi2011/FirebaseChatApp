@@ -60,6 +60,7 @@ class MessagesController: UITableViewController {
                 message.fromId = dictionary["fromId"] as? String
                 message.toId = dictionary["toId"] as? String
                 message.timeStamp = dictionary["timeStamp"] as? NSNumber
+                message.imageUrl = dictionary["imageUrl"] as? String
                 
                 self.messages.append(message)
                 
