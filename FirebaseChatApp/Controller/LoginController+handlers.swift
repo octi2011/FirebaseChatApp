@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 
 extension LoginController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
     @objc func handleSelectProfileImageView() {
         let picker = UIImagePickerController()
         
@@ -61,8 +62,10 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
             //upload to storage
             let imageName = NSUUID().uuidString
             
-            let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).png")
-            if let uploadData = UIImagePNGRepresentation(self.profileImageView.image!) {
+            let storageRef = Storage.storage().reference().child("profile_images").child("\(imageName).jpg")
+            
+            if let profileImage = self.profileImageView.image, let uploadData = UIImageJPEGRepresentation(profileImage, 0.1) {
+                
                 storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                     
                     if error != nil {
@@ -81,6 +84,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
     }
     
     private func registerUserIntoDatabase(withUID uid: String, values: [String: AnyObject]) {
+        
         let ref = Database.database().reference(fromURL: "https://fir-chatapp-7fc37.firebaseio.com/")
         let usersReference = ref.child("users").child(uid)
         usersReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
@@ -90,9 +94,14 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                 return
             }
             
+            let user = User()
+            user.name = values["name"] as? String
+            user.email = values["email"] as? String
+            user.profileImageUrl = values["profileImageUrl"] as? String
+            
+            self.messagesController?.setupNavBar(withUser: user)
+            
             self.dismiss(animated: true, completion: nil)
         })
     }
-    
-    
 }
