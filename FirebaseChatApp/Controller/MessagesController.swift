@@ -25,6 +25,41 @@ class MessagesController: UITableViewController {
         checkIfUserIsLoggedIn()
         
         tableView.register(UserCell.self, forCellReuseIdentifier: cellId)
+        
+        tableView.allowsSelectionDuringEditing = true
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        let message = self.messages[indexPath.row]
+        
+        if let chatPartnerId = message.charPartnerId() {
+            Database.database().reference().child("user-messages").child(uid).child(chatPartnerId).removeValue { (error, ref) in
+                
+                if error != nil {
+                    print("Failed to delete message", error as Any)
+                    return
+                }
+                
+                self.messagesDictionary.removeValue(forKey: chatPartnerId)
+                
+                self.attemptReloadOfTable()
+                
+                // this is one way of updating the table, but it's not safe
+//                self.messages.remove(at: indexPath.row)
+//                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                
+            }
+        }
+        
+        
     }
     
     var messages = [Message]()
@@ -46,6 +81,11 @@ class MessagesController: UITableViewController {
                 
             }, withCancel: nil)
             
+        }, withCancel: nil)
+        
+        ref.observe(.childRemoved, with: { (snapshot) in
+            self.messagesDictionary.removeValue(forKey: snapshot.key)
+            self.attemptReloadOfTable()
         }, withCancel: nil)
     }
     
